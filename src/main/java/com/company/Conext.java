@@ -5,9 +5,13 @@
  */
 package com.company;
 
+import com.company.dao.impl.EmpHistoryDaoImpl;
+import com.company.dao.impl.SkillDaoImpl;
 import com.company.dao.impl.UserDaoImpl;
 import com.company.dao.impl.UserEmpHistoryDaoImpl;
 import com.company.dao.impl.UserSkillDaoImpl;
+import com.company.dao.inter.EmpHistoryDaoInter;
+import com.company.dao.inter.SkillDaoInter;
 import com.company.dao.inter.UserEmpHistoryDaoInter;
 
 /**
@@ -22,7 +26,14 @@ public class Conext {
        return new UserSkillDaoImpl();
     }
 
-    static UserEmpHistoryDaoInter instanceUserEmpHistoryDao() {
+    public static UserEmpHistoryDaoInter instanceUserEmpHistoryDao() {
        return new UserEmpHistoryDaoImpl();
+    }
+    public static EmpHistoryDaoInter instanceEmpHistoryDao() {
+       return new EmpHistoryDaoImpl();
+    }
+
+    static SkillDaoInter instanceSkillDao() {
+       return new SkillDaoImpl();
     }
 }

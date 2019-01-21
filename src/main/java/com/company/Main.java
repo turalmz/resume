@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package com.company;
+import com.company.dao.inter.EmpHistoryDaoInter;
+import com.company.dao.inter.SkillDaoInter;
 import com.company.dao.inter.UserSkillDaoInter;
 import com.company.entity.UserSkill;
 import com.company.dao.inter.UserEmpHistoryDaoInter;
@@ -39,6 +41,16 @@ public class Main {
         for (EmpHistory userSkill : ueh.getAllEmpHistoryByUserId(1)) {
             System.out.println(userSkill);
         }
+        
+        
+        EmpHistoryDaoInter eh = Conext.instanceEmpHistoryDao();
+        
+        System.out.println(eh.getById(1));
+
+        
+        SkillDaoInter s = Conext.instanceSkillDao();
+        
+        System.out.println(s.getById(1));
     }
     
 }

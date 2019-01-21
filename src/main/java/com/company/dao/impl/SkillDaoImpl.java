@@ -5,9 +5,9 @@
  */
 package com.company.dao.impl;
 
-import com.company.entity.User;
 import com.company.dao.inter.AbstractDAO;
-import com.company.dao.inter.UserDaoInter;
+import com.company.dao.inter.SkillDaoInter;
+import com.company.entity.Skill;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,33 +19,26 @@ import java.util.List;
  *
  * @author TURAL
  */
-public class SkillDaoImpl extends AbstractDAO implements UserDaoInter{
+public class SkillDaoImpl extends AbstractDAO implements SkillDaoInter {
 
     @Override
-    public List<User> getAll() {
-        List<User> list = new ArrayList<>();
+    public List<Skill> getAll() {
+        List<Skill> list = new ArrayList<>();
         Connection conn;
         try {
             conn = connect();
 
             Statement stmt = conn.createStatement();
-            stmt.execute("SELECT * FROM USER");
-            ResultSet rs= stmt.getResultSet();
+            stmt.execute("SELECT * FROM skill");
+            ResultSet rs = stmt.getResultSet();
 
-            while(rs.next()){
-                System.out.println(rs.getInt("Id"));
-                System.out.println(rs.getString("firstname"));
-                System.out.println(rs.getString("lastname"));
-                System.out.println(rs.getString("email"));
-                System.out.println(rs.getString("phone"));
+            while (rs.next()) {
+
                 int id = rs.getInt("Id");
-                String firstname = rs.getString("firstname");
-                String lastname = rs.getString("lastname");
-                String email = rs.getString("email");
-                String phone = rs.getString("phone");
-                list.add(new User(id,firstname,lastname,email,phone));
+                String name = rs.getString("name");
+                list.add(new Skill(id, name));
 
-            }    
+            }
         } catch (Exception ex) {
 
         }
@@ -53,36 +46,26 @@ public class SkillDaoImpl extends AbstractDAO implements UserDaoInter{
     }
 
     @Override
-    public User getById(int userId) {
-        User usr = null;
+    public Skill getById(int userId) {
+        Skill usr = null;
         Connection conn;
         try {
             conn = connect();
 
-//            Statement stmt = conn.createStatement();
-//            stmt.execute("SELECT * FROM USER WHERE ID="+userId);
-
-            PreparedStatement stmt =  conn.prepareStatement("SELECT * FROM USER WHERE ID = ?");
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM skill WHERE ID = ?");
             stmt.setInt(1, userId);
             stmt.execute();
 
-            ResultSet rs= stmt.getResultSet();
+            ResultSet rs = stmt.getResultSet();
 
-            while(rs.next()){
-                System.out.println(rs.getInt("Id"));
-                System.out.println(rs.getString("firstname"));
-                System.out.println(rs.getString("lastname"));
-                System.out.println(rs.getString("email"));
-                System.out.println(rs.getString("phone"));
+            while (rs.next()) {
+
                 int id = rs.getInt("Id");
-                String firstname = rs.getString("firstname");
-                String lastname = rs.getString("lastname");
-                String email = rs.getString("email");
-                String phone = rs.getString("phone");
-                usr = new User(id,firstname,lastname,email,phone);
-                 
+                String name = rs.getString("name");
 
-            }    
+                usr = new Skill(id, name);
+
+            }
         } catch (Exception ex) {
 
         }
@@ -90,21 +73,16 @@ public class SkillDaoImpl extends AbstractDAO implements UserDaoInter{
     }
 
     @Override
-    public boolean updateUser(User u) {
+    public boolean updateSkill(Skill u) {
         Connection conn;
         boolean b = true;
         try {
             conn = connect();
-//            Statement stmt = conn.createStatement();
-//            return stmt.execute("UPDATE USER SET FIRSTNAME="+u.getFirstname()+" , LASTNAME="+u.getLastname()+" , EMAIL = "+u.getEmail()+" , PHONE = "+u.getPhone()+" WHERE ID="+u.getEmail());
-            PreparedStatement stmt =  conn.prepareStatement("UPDATE USER SET FIRSTNAME=? , LASTNAME=? , EMAIL = ? , PHONE = ? WHERE ID= ?");
-            stmt.setString(1, u.getFirstname());
-            stmt.setString(2, u.getLastname());
-            stmt.setString(3, u.getEmail());
-            stmt.setString(4, u.getPhone());
+            PreparedStatement stmt = conn.prepareStatement("UPDATE skill SET name=? WHERE id= ?");
+            stmt.setString(1, u.getName());
             stmt.setInt(5, u.getId());
             b = stmt.execute();
-            
+
         } catch (Exception ex) {
             System.err.println(ex);
             b = false;
@@ -113,17 +91,16 @@ public class SkillDaoImpl extends AbstractDAO implements UserDaoInter{
     }
 
     @Override
-    public boolean removeUser(int id) {
+    public boolean removeSkill(int id) {
         Connection conn;
         try {
             conn = connect();
             Statement stmt = conn.createStatement();
-            return stmt.execute("DELETE USER  WHERE ID="+id);
+            return stmt.execute("DELETE skill  WHERE id=" + id);
 
         } catch (Exception ex) {
             return false;
-        }    
+        }
     }
-    
 
 }
