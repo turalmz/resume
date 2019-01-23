@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author TURAL
  */
-public class EmpHistoryDaoImpl extends AbstractDAO implements EmpHistoryDaoInter{
+public class EmpHistoryDaoImpl extends AbstractDAO implements EmpHistoryDaoInter {
 
     public EmpHistory getEmpHistory(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
@@ -37,7 +37,7 @@ public class EmpHistoryDaoImpl extends AbstractDAO implements EmpHistoryDaoInter
         return us;
 
     }
-    
+
     @Override
     public List<EmpHistory> getAll() {
         List<EmpHistory> list = new ArrayList<>();
@@ -47,16 +47,16 @@ public class EmpHistoryDaoImpl extends AbstractDAO implements EmpHistoryDaoInter
 
             Statement stmt = conn.createStatement();
             stmt.execute("SELECT * FROM employment_history");
-            ResultSet rs= stmt.getResultSet();
+            ResultSet rs = stmt.getResultSet();
 
-            while(rs.next()){
-    
+            while (rs.next()) {
+
                 EmpHistory us = getEmpHistory(rs);
                 list.add(us);
 
-            }  
+            }
         } catch (Exception ex) {
-            
+
         }
         return list;
     }
@@ -68,18 +68,18 @@ public class EmpHistoryDaoImpl extends AbstractDAO implements EmpHistoryDaoInter
         try {
             conn = connect();
 
-            PreparedStatement stmt =  conn.prepareStatement("SELECT * FROM employment_history WHERE ID = ?");
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM employment_history WHERE ID = ?");
             stmt.setInt(1, id);
             stmt.execute();
 
-            ResultSet rs= stmt.getResultSet();
+            ResultSet rs = stmt.getResultSet();
 
-            while(rs.next()){
-    
+            while (rs.next()) {
+
                 em = getEmpHistory(rs);
                 return em;
 
-            }   
+            }
         } catch (Exception ex) {
             System.err.println(ex);
         }
@@ -92,14 +92,14 @@ public class EmpHistoryDaoImpl extends AbstractDAO implements EmpHistoryDaoInter
         boolean b = true;
         try {
             conn = connect();
-            PreparedStatement stmt =  conn.prepareStatement("UPDATE employment_history SET header=? , job_description=? , begin_date = ? , end_date = ? WHERE ID= ?");
+            PreparedStatement stmt = conn.prepareStatement("UPDATE employment_history SET header=? , job_description=? , begin_date = ? , end_date = ? WHERE ID= ?");
             stmt.setString(1, u.getHeader());
             stmt.setString(2, u.getJobDescription());
             stmt.setDate(3, u.getBeginDate());
             stmt.setDate(4, u.getEndDate());
             stmt.setInt(5, u.getId());
             b = stmt.execute();
-            
+
         } catch (Exception ex) {
             System.err.println(ex);
             b = false;
@@ -113,12 +113,11 @@ public class EmpHistoryDaoImpl extends AbstractDAO implements EmpHistoryDaoInter
         try {
             conn = connect();
             Statement stmt = conn.createStatement();
-            return stmt.execute("DELETE employment_history  WHERE id="+id);
+            return stmt.execute("DELETE employment_history  WHERE id=" + id);
 
         } catch (Exception ex) {
             return false;
-        }    
+        }
     }
-    
 
 }

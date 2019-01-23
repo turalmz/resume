@@ -80,7 +80,7 @@ public class SkillDaoImpl extends AbstractDAO implements SkillDaoInter {
             conn = connect();
             PreparedStatement stmt = conn.prepareStatement("UPDATE skill SET name=? WHERE id= ?");
             stmt.setString(1, u.getName());
-            stmt.setInt(5, u.getId());
+            stmt.setInt(2, u.getId());
             b = stmt.execute();
 
         } catch (Exception ex) {

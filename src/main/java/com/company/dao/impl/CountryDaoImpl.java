@@ -6,11 +6,12 @@
 package com.company.dao.impl;
 
 import com.company.dao.inter.AbstractDAO;
-import com.company.dao.inter.SkillDaoInter;
-import com.company.entity.Skill;
+import com.company.dao.inter.CountryDaoInter;
+import com.company.entity.Country;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,24 +20,35 @@ import java.util.List;
  *
  * @author TURAL
  */
-public class CountryDaoImpl extends AbstractDAO implements SkillDaoInter {
+public class CountryDaoImpl extends AbstractDAO implements CountryDaoInter {
+
+    public Country getUser(ResultSet rs) throws SQLException {
+
+        int id = rs.getInt("Id");
+        String name = rs.getString("name");
+        String nationality = rs.getString("nationality");
+
+        Country contry = new Country(id, name, nationality);
+        System.out.println(contry);
+        return contry;
+
+    }
 
     @Override
-    public List<Skill> getAll() {
-        List<Skill> list = new ArrayList<>();
+    public List<Country> getAll() {
+        List<Country> list = new ArrayList<>();
         Connection conn;
         try {
             conn = connect();
 
             Statement stmt = conn.createStatement();
-            stmt.execute("SELECT * FROM skill");
+            stmt.execute("SELECT * FROM country");
             ResultSet rs = stmt.getResultSet();
 
             while (rs.next()) {
 
-                int id = rs.getInt("Id");
-                String name = rs.getString("name");
-                list.add(new Skill(id, name));
+                Country contry = getUser(rs);
+                list.add(contry);
 
             }
         } catch (Exception ex) {
@@ -46,13 +58,13 @@ public class CountryDaoImpl extends AbstractDAO implements SkillDaoInter {
     }
 
     @Override
-    public Skill getById(int userId) {
-        Skill usr = null;
+    public Country getById(int userId) {
+        Country el = null;
         Connection conn;
         try {
             conn = connect();
 
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM skill WHERE ID = ?");
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM country WHERE ID = ?");
             stmt.setInt(1, userId);
             stmt.execute();
 
@@ -60,27 +72,25 @@ public class CountryDaoImpl extends AbstractDAO implements SkillDaoInter {
 
             while (rs.next()) {
 
-                int id = rs.getInt("Id");
-                String name = rs.getString("name");
-
-                usr = new Skill(id, name);
+                el = getUser(rs);
 
             }
         } catch (Exception ex) {
 
         }
-        return usr;
+        return el;
     }
 
     @Override
-    public boolean updateSkill(Skill u) {
+    public boolean updateCountry(Country u) {
         Connection conn;
         boolean b = true;
         try {
             conn = connect();
-            PreparedStatement stmt = conn.prepareStatement("UPDATE skill SET name=? WHERE id= ?");
+            PreparedStatement stmt = conn.prepareStatement("UPDATE country SET name=?,nationality=? WHERE id= ?");
             stmt.setString(1, u.getName());
-            stmt.setInt(5, u.getId());
+            stmt.setString(2, u.getNatinality());
+            stmt.setInt(3, u.getId());
             b = stmt.execute();
 
         } catch (Exception ex) {
@@ -91,12 +101,12 @@ public class CountryDaoImpl extends AbstractDAO implements SkillDaoInter {
     }
 
     @Override
-    public boolean removeSkill(int id) {
+    public boolean removeCountry(int id) {
         Connection conn;
         try {
             conn = connect();
             Statement stmt = conn.createStatement();
-            return stmt.execute("DELETE skill  WHERE id=" + id);
+            return stmt.execute("DELETE country WHERE id=" + id);
 
         } catch (Exception ex) {
             return false;
