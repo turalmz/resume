@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class CountryDaoImpl extends AbstractDAO implements CountryDaoInter {
 
-    public Country getUser(ResultSet rs) throws SQLException {
+    public Country getCountry(ResultSet rs) throws SQLException {
 
         int id = rs.getInt("Id");
         String name = rs.getString("name");
@@ -47,7 +47,7 @@ public class CountryDaoImpl extends AbstractDAO implements CountryDaoInter {
 
             while (rs.next()) {
 
-                Country contry = getUser(rs);
+                Country contry = getCountry(rs);
                 list.add(contry);
 
             }
@@ -72,7 +72,7 @@ public class CountryDaoImpl extends AbstractDAO implements CountryDaoInter {
 
             while (rs.next()) {
 
-                el = getUser(rs);
+                el = getCountry(rs);
 
             }
         } catch (Exception ex) {
@@ -105,9 +105,11 @@ public class CountryDaoImpl extends AbstractDAO implements CountryDaoInter {
         Connection conn;
         try {
             conn = connect();
-            Statement stmt = conn.createStatement();
-            return stmt.execute("DELETE country WHERE id=" + id);
 
+            PreparedStatement stmt = conn.prepareStatement("DELETE country WHERE id=?;");
+            stmt.setInt(1, id);
+
+            return stmt.execute();
         } catch (Exception ex) {
             return false;
         }
