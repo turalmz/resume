@@ -5,35 +5,46 @@
  */
 package com.company;
 
+import com.company.dao.impl.CountryDaoImpl;
 import com.company.dao.impl.EmpHistoryDaoImpl;
 import com.company.dao.impl.SkillDaoImpl;
 import com.company.dao.impl.UserDaoImpl;
 import com.company.dao.impl.UserEmpHistoryDaoImpl;
 import com.company.dao.impl.UserSkillDaoImpl;
+import com.company.dao.inter.CountryDaoInter;
 import com.company.dao.inter.EmpHistoryDaoInter;
 import com.company.dao.inter.SkillDaoInter;
+import com.company.dao.inter.UserDaoInter;
 import com.company.dao.inter.UserEmpHistoryDaoInter;
+import com.company.dao.inter.UserSkillDaoInter;
 
 /**
  *
  * @author TURAL
  */
 public class Context {
-    public static UserDaoImpl instanceUserDao() {
-       return new UserDaoImpl();
+
+    public static UserDaoInter instanceUserDao() {
+        return new UserDaoImpl();
     }
-    public static UserSkillDaoImpl instanceUserSkillDao() {
-       return new UserSkillDaoImpl();
+
+    public static UserSkillDaoInter instanceUserSkillDao() {
+        return new UserSkillDaoImpl();
     }
 
     public static UserEmpHistoryDaoInter instanceUserEmpHistoryDao() {
-       return new UserEmpHistoryDaoImpl();
-    }
-    public static EmpHistoryDaoInter instanceEmpHistoryDao() {
-       return new EmpHistoryDaoImpl();
+        return new UserEmpHistoryDaoImpl();
     }
 
-    static SkillDaoInter instanceSkillDao() {
-       return new SkillDaoImpl();
+    public static EmpHistoryDaoInter instanceEmpHistoryDao() {
+        return new EmpHistoryDaoImpl();
+    }
+
+    public static SkillDaoInter instanceSkillDao() {
+        return new SkillDaoImpl();
+    }
+
+    public static CountryDaoInter instanceCountryDao() {
+        return new CountryDaoImpl();
     }
 }

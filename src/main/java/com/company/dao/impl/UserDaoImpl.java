@@ -14,7 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -111,7 +111,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
             conn = connect();
 //            Statement stmt = conn.createStatement();
 //            return stmt.execute("UPDATE USER SET FIRSTNAME="+u.getFirstname()+" , LASTNAME="+u.getLastname()+" , EMAIL = "+u.getEmail()+" , PHONE = "+u.getPhone()+" WHERE ID="+u.getEmail());
-            PreparedStatement stmt = conn.prepareStatement("UPDATE user SET firstname=? , lastname=? , email = ? , phone = ?,profile_description = ? ,adress = ?,birth_date =? WHERE id= ?;");
+            PreparedStatement stmt = conn.prepareStatement("UPDATE user SET firstname=? , lastname=? , email = ? , phone = ?,profile_description = ? ,address = ?,birth_date =? WHERE id= ?;");
             stmt.setString(1, u.getFirstname());
             stmt.setString(2, u.getLastname());
             
@@ -121,7 +121,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
             stmt.setString(5, u.getProfileDescription());
             stmt.setString(6, u.getAddress());
             
-            stmt.setDate(7, (java.sql.Date) u.getBirthDate());
+            stmt.setDate(7,  u.getBirthDate());
 
             stmt.setInt(8, u.getId());
             b = stmt.execute();
