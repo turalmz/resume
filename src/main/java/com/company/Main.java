@@ -29,26 +29,26 @@ public class Main {
         //jdbc interface Connection,Statement,ResultSet,
         
   */      
-        UserSkillDaoInter usk = Conext.instanceUserSkillDao();
+        UserSkillDaoInter usk = Context.instanceUserSkillDao();
         
         for (UserSkill userSkill : usk.getAllSkillByUserId(2)) {
             System.out.println(userSkill);
         }
         
         
-        UserEmpHistoryDaoInter ueh = Conext.instanceUserEmpHistoryDao();
+        UserEmpHistoryDaoInter ueh = Context.instanceUserEmpHistoryDao();
         
         for (EmpHistory userSkill : ueh.getAllEmpHistoryByUserId(1)) {
             System.out.println(userSkill);
         }
         
         
-        EmpHistoryDaoInter eh = Conext.instanceEmpHistoryDao();
+        EmpHistoryDaoInter eh = Context.instanceEmpHistoryDao();
         
         System.out.println(eh.getById(1));
 
         
-        SkillDaoInter s = Conext.instanceSkillDao();
+        SkillDaoInter s = Context.instanceSkillDao();
         
         System.out.println(s.getById(1));
     }

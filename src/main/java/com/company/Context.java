@@ -18,7 +18,7 @@ import com.company.dao.inter.UserEmpHistoryDaoInter;
  *
  * @author TURAL
  */
-public class Conext {
+public class Context {
     public static UserDaoImpl instanceUserDao() {
        return new UserDaoImpl();
     }
