@@ -72,6 +72,37 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         return list;
     }
 
+    public List<User> getByUser(User usr) {
+        List<User> list = new ArrayList<>();
+        Connection conn;
+        try {
+            conn = connect();
+
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM USER WHERE firstname LIKE ? AND lastname LIKE ?;");
+            stmt.setString(1, usr.getFirstname());
+            stmt.setString(2, usr.getLastname());
+
+            stmt.execute();
+
+            ResultSet rs = stmt.getResultSet();
+
+            while (rs.next()) {
+                System.out.println(rs.getInt("Id"));
+                System.out.println(rs.getString("firstname"));
+                System.out.println(rs.getString("lastname"));
+                System.out.println(rs.getString("email"));
+                System.out.println(rs.getString("phone"));
+
+                User us = getUser(rs);
+                list.add(us);
+            }
+        } catch (Exception ex) {
+
+        }
+        return list;
+    }
+    
+    
     @Override
     public User getById(int userId) {
         User usr = null;
@@ -79,8 +110,6 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         try {
             conn = connect();
 
-//            Statement stmt = conn.createStatement();
-//            stmt.execute("SELECT * FROM USER WHERE ID="+userId);
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM USER WHERE ID = ?;");
             stmt.setInt(1, userId);
             stmt.execute();
@@ -109,9 +138,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         boolean b = true;
         try {
             conn = connect();
-//            Statement stmt = conn.createStatement();
-//            return stmt.execute("UPDATE USER SET FIRSTNAME="+u.getFirstname()+" , LASTNAME="+u.getLastname()+" , EMAIL = "+u.getEmail()+" , PHONE = "+u.getPhone()+" WHERE ID="+u.getEmail());
-            PreparedStatement stmt = conn.prepareStatement("UPDATE user SET firstname=? , lastname=? , email = ? , phone = ?,profile_description = ? ,address = ?,birth_date =? WHERE id= ?;");
+          PreparedStatement stmt = conn.prepareStatement("UPDATE user SET firstname=? , lastname=? , email = ? , phone = ?,profile_description = ? ,address = ?,birth_date =? WHERE id= ?;");
             stmt.setString(1, u.getFirstname());
             stmt.setString(2, u.getLastname());
             
@@ -138,8 +165,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         Connection conn;
         try {
             conn = connect();
-//            Statement stmt = conn.createStatement();
-//            return stmt.execute("DELETE USER  WHERE ID="+id);
+
             PreparedStatement stmt = conn.prepareStatement("DELETE USER  WHERE ID=?;");
             stmt.setInt(1, id);
 
