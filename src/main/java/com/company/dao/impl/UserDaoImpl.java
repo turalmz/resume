@@ -35,8 +35,12 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
 
         String address = rs.getString("address");
         String profileDescription = rs.getString("profile_description");
-
-        Date birthDate = rs.getDate("birth_date");
+        Date birthDate=null;
+        try {
+             birthDate = rs.getDate("birth_date");
+        } catch (Exception ex) {
+            System.err.println("Houston, we have a problem");
+        }
 
         User us = new User(id, firstname, lastname, email, phone, address, profileDescription, birthDate);
         System.out.println(us);
@@ -183,6 +187,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         try {
             conn = connect();
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO user (firstname , lastname , email , phone ,profile_description  ,address ,birth_date ) VALUES (? , ? ,  ? ,  ?, ? , ?, ? ) ;");
+
             stmt.setString(1, u.getFirstname());
             stmt.setString(2, u.getLastname());
 
@@ -191,8 +196,12 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
 
             stmt.setString(5, u.getProfileDescription());
             stmt.setString(6, u.getAddress());
-
-            stmt.setDate(7, u.getBirthDate());
+            int k = 7;
+            if (u.getBirthDate() != null) {
+                stmt.setDate(k, u.getBirthDate());
+            } else {
+                stmt.setString(k, null);
+            }
 
             b = stmt.execute();
 
