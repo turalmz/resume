@@ -151,7 +151,11 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
             stmt.setString(5, u.getProfileDescription());
             stmt.setString(6, u.getAddress());
 
-            stmt.setDate(7, u.getBirthDate());
+            if (u.getBirthDate() != null) {
+                stmt.setDate(7, u.getBirthDate());
+            } else {
+                stmt.setString(7, null);
+            }
 
             stmt.setInt(8, u.getId());
             b = stmt.execute();
@@ -196,11 +200,11 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
 
             stmt.setString(5, u.getProfileDescription());
             stmt.setString(6, u.getAddress());
-            int k = 7;
+            
             if (u.getBirthDate() != null) {
-                stmt.setDate(k, u.getBirthDate());
+                stmt.setDate(7, u.getBirthDate());
             } else {
-                stmt.setString(k, null);
+                stmt.setString(7, null);
             }
 
             b = stmt.execute();
