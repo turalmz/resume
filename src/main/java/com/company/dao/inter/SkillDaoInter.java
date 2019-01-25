@@ -21,5 +21,7 @@ public interface SkillDaoInter {
     boolean updateSkill(Skill u);
      
     boolean removeSkill(int id);
+
+    public List<Skill> getBySkill(Skill skl);
     
 }

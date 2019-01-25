@@ -103,4 +103,30 @@ public class SkillDaoImpl extends AbstractDAO implements SkillDaoInter {
         }
     }
 
+    @Override
+    public List<Skill> getBySkill(Skill skl) {
+        List<Skill> list = new ArrayList<>();
+        Connection conn;
+        try {
+            conn = connect();
+
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM skill WHERE name LIKE ?");
+            stmt.setString(1, skl.getName());
+            stmt.execute();
+
+            ResultSet rs = stmt.getResultSet();
+
+            while (rs.next()) {
+
+              int id = rs.getInt("Id");
+                String name = rs.getString("name");
+                list.add(new Skill(id, name));
+
+            }
+        } catch (Exception ex) {
+            System.err.println("Houston, we have a problem");
+        }
+        return list;    
+    }
+
 }
