@@ -17,7 +17,9 @@ public interface UserDaoInter {
     List<User> getAll();
      
     public User getById(int id);
-     
+
+    boolean insertUser(User u);
+
     boolean updateUser(User u);
      
     boolean removeUser(int id);

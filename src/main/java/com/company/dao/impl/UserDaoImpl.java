@@ -101,8 +101,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         }
         return list;
     }
-    
-    
+
     @Override
     public User getById(int userId) {
         User usr = null;
@@ -138,17 +137,17 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         boolean b = true;
         try {
             conn = connect();
-          PreparedStatement stmt = conn.prepareStatement("UPDATE user SET firstname=? , lastname=? , email = ? , phone = ?,profile_description = ? ,address = ?,birth_date =? WHERE id= ?;");
+            PreparedStatement stmt = conn.prepareStatement("UPDATE user SET firstname=? , lastname=? , email = ? , phone = ?,profile_description = ? ,address = ?,birth_date =? WHERE id= ?;");
             stmt.setString(1, u.getFirstname());
             stmt.setString(2, u.getLastname());
-            
+
             stmt.setString(3, u.getEmail());
             stmt.setString(4, u.getPhone());
-            
+
             stmt.setString(5, u.getProfileDescription());
             stmt.setString(6, u.getAddress());
-            
-            stmt.setDate(7,  u.getBirthDate());
+
+            stmt.setDate(7, u.getBirthDate());
 
             stmt.setInt(8, u.getId());
             b = stmt.execute();
@@ -168,13 +167,40 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
 
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM USER  WHERE ID=?;");
             stmt.setInt(1, id);
-            System.out.println("id :"+String.valueOf(id));
+            System.out.println("id :" + String.valueOf(id));
             return stmt.execute();
 
         } catch (Exception ex) {
             System.out.println(ex);
             return false;
         }
+    }
+
+    @Override
+    public boolean insertUser(User u) {
+        Connection conn;
+        boolean b = true;
+        try {
+            conn = connect();
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO user (firstname , lastname , email , phone ,profile_description  ,address ,birth_date ) VALUES (? , ? ,  ? ,  ?, ? , ?, ? ) ;");
+            stmt.setString(1, u.getFirstname());
+            stmt.setString(2, u.getLastname());
+
+            stmt.setString(3, u.getEmail());
+            stmt.setString(4, u.getPhone());
+
+            stmt.setString(5, u.getProfileDescription());
+            stmt.setString(6, u.getAddress());
+
+            stmt.setDate(7, u.getBirthDate());
+
+            b = stmt.execute();
+
+        } catch (Exception ex) {
+            System.err.println(ex);
+            b = false;
+        }
+        return b;
     }
 
 }
