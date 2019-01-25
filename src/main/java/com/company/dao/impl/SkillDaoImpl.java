@@ -90,35 +90,56 @@ public class SkillDaoImpl extends AbstractDAO implements SkillDaoInter {
         return b;
     }
 
+    public boolean insertSkill(Skill skl) {
+        Connection conn;
+        boolean b = true;
+        try {
+            conn = connect();
+            PreparedStatement stmt = conn.prepareStatement("insert skill (name) VALUES (?);");
+            stmt.setString(1, skl.getName());
+            b = stmt.execute();
+
+        } catch (Exception ex) {
+            System.err.println(ex);
+            b = false;
+        }
+        return b;
+    }
+
+    
     @Override
     public boolean removeSkill(int id) {
         Connection conn;
         try {
             conn = connect();
-            Statement stmt = conn.createStatement();
-            return stmt.execute("DELETE FROM skill  WHERE id=" + id);
+
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM skill WHERE id=?;");
+            stmt.setInt(1, id);
+            return stmt.execute();
+
 
         } catch (Exception ex) {
+            System.err.println(ex);
             return false;
         }
     }
 
     @Override
-    public List<Skill> getBySkill(Skill skl) {
+    public List<Skill> getByName(String sname) {
         List<Skill> list = new ArrayList<>();
         Connection conn;
         try {
             conn = connect();
 
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM skill WHERE name LIKE ?");
-            stmt.setString(1, skl.getName());
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM skill WHERE name LIKE ?;");
+            stmt.setString(1, sname);
             stmt.execute();
 
             ResultSet rs = stmt.getResultSet();
 
             while (rs.next()) {
 
-              int id = rs.getInt("Id");
+                int id = rs.getInt("Id");
                 String name = rs.getString("name");
                 list.add(new Skill(id, name));
 
@@ -126,7 +147,7 @@ public class SkillDaoImpl extends AbstractDAO implements SkillDaoInter {
         } catch (Exception ex) {
             System.err.println("Houston, we have a problem");
         }
-        return list;    
+        return list;
     }
 
 }
