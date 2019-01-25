@@ -96,7 +96,7 @@ public class SkillDaoImpl extends AbstractDAO implements SkillDaoInter {
         try {
             conn = connect();
             Statement stmt = conn.createStatement();
-            return stmt.execute("DELETE skill  WHERE id=" + id);
+            return stmt.execute("DELETE FROM skill  WHERE id=" + id);
 
         } catch (Exception ex) {
             return false;

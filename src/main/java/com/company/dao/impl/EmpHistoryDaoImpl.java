@@ -113,7 +113,7 @@ public class EmpHistoryDaoImpl extends AbstractDAO implements EmpHistoryDaoInter
         try {
             conn = connect();
             Statement stmt = conn.createStatement();
-            return stmt.execute("DELETE employment_history  WHERE id=" + id);
+            return stmt.execute("DELETE FROM employment_history  WHERE id=" + id);
 
         } catch (Exception ex) {
             return false;

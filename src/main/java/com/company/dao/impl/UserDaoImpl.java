@@ -166,12 +166,13 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         try {
             conn = connect();
 
-            PreparedStatement stmt = conn.prepareStatement("DELETE USER  WHERE ID=?;");
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM USER  WHERE ID=?;");
             stmt.setInt(1, id);
-
+            System.out.println("id :"+String.valueOf(id));
             return stmt.execute();
 
         } catch (Exception ex) {
+            System.out.println(ex);
             return false;
         }
     }

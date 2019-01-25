@@ -106,7 +106,7 @@ public class CountryDaoImpl extends AbstractDAO implements CountryDaoInter {
         try {
             conn = connect();
 
-            PreparedStatement stmt = conn.prepareStatement("DELETE country WHERE id=?;");
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM country WHERE id=?;");
             stmt.setInt(1, id);
 
             return stmt.execute();
