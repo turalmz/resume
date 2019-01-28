@@ -167,22 +167,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         return b;
     }
 
-    @Override
-    public boolean removeUser(int id) {
-        Connection conn;
-        try {
-            conn = connect();
 
-            PreparedStatement stmt = conn.prepareStatement("DELETE FROM USER  WHERE ID=?;");
-            stmt.setInt(1, id);
-            System.out.println("id :" + String.valueOf(id));
-            return stmt.execute();
-
-        } catch (Exception ex) {
-            System.out.println(ex);
-            return false;
-        }
-    }
 
     @Override
     public boolean insertUser(User u) {
@@ -215,5 +200,21 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         }
         return b;
     }
+    
+    @Override
+    public boolean removeUser(int id) {
+        Connection conn;
+        try {
+            conn = connect();
 
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM USER  WHERE ID=?;");
+            stmt.setInt(1, id);
+            System.out.println("id :" + String.valueOf(id));
+            return stmt.execute();
+
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return false;
+        }
+    }
 }
