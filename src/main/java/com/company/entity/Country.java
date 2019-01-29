@@ -43,4 +43,10 @@ public class Country {
     public void setNatinality(String natinality) {
         this.natinality = natinality;
     }
+
+    @Override
+    public String toString() {
+        return "" + name + "(" + natinality + ')';
+    }
+    
 }
