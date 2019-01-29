@@ -26,11 +26,13 @@ public class UserSkillDaoImpl extends AbstractDAO implements UserSkillDaoInter {
 
     public UserSkill getUserSkill(ResultSet rs) throws SQLException {
 
+        int userSkillId = rs.getInt("user_skill_id");
+
         int userId = rs.getInt("id");
         int skill_id = rs.getInt("skill_id");
         String skill_name = rs.getString("skill_name");
         int power = rs.getInt("power");
-        UserSkill us = new UserSkill(null, new User(userId), new Skill(skill_id, skill_name), power);
+        UserSkill us = new UserSkill(userSkillId, new User(userId), new Skill(skill_id, skill_name), power);
         System.out.println(us);
         return us;
 
@@ -44,6 +46,7 @@ public class UserSkillDaoImpl extends AbstractDAO implements UserSkillDaoInter {
             conn = connect();
 
             PreparedStatement stmt = conn.prepareStatement("SELECT "
+                    + " us.id as user_skill_id,"
                     + " u.*,"
                     + " us.skill_id,s.name AS Skill_name ,"
                     + " us.power "
@@ -112,7 +115,7 @@ public class UserSkillDaoImpl extends AbstractDAO implements UserSkillDaoInter {
     }
 
     @Override
-    public boolean removeUser(int id) {
+    public boolean removeUserSkill(int id) {
         Connection conn;
         try {
             conn = connect();

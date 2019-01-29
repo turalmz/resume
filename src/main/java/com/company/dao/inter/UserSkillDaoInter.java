@@ -22,5 +22,5 @@ public interface UserSkillDaoInter {
     
     public boolean updateUserSkill(UserSkill u);
     
-    public boolean removeUser(int id);
+    public boolean removeUserSkill(int id);
 }
