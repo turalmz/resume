@@ -133,7 +133,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
 
             }
         } catch (Exception ex) {
-
+            System.out.println(ex);
         }
         return usr;
     }
