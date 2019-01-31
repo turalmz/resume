@@ -8,6 +8,7 @@ package com.company.dao.impl;
 import com.company.entity.User;
 import com.company.dao.inter.AbstractDAO;
 import com.company.dao.inter.UserDaoInter;
+import com.company.entity.Country;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,14 +36,16 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
 
         String address = rs.getString("address");
         String profileDescription = rs.getString("profile_description");
-        Date birthDate=null;
+        Date birthDate = null;
         try {
-             birthDate = rs.getDate("birth_date");
+            birthDate = rs.getDate("birth_date");
         } catch (Exception ex) {
             System.err.println("Houston, we have a problem");
         }
+        int birthPlace = rs.getInt("birth_place");
+        int nationality = rs.getInt("nationality");
 
-        User us = new User(id, firstname, lastname, email, phone, address, profileDescription, birthDate);
+        User us = new User(id, firstname, lastname, email, phone, address, profileDescription, birthDate, new Country(birthPlace), new Country(nationality));
         System.out.println(us);
         return us;
 
@@ -141,7 +144,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         boolean b = true;
         try {
             conn = connect();
-            PreparedStatement stmt = conn.prepareStatement("UPDATE user SET firstname=? , lastname=? , email = ? , phone = ?,profile_description = ? ,address = ?,birth_date =? WHERE id= ?;");
+            PreparedStatement stmt = conn.prepareStatement("UPDATE user SET firstname=? , lastname=? , email = ? , phone = ?,profile_description = ? ,address = ?,birth_date =?, birth_place = ?, nationality = ? WHERE id= ?;");
             stmt.setString(1, u.getFirstname());
             stmt.setString(2, u.getLastname());
 
@@ -157,7 +160,19 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
                 stmt.setString(7, null);
             }
 
-            stmt.setInt(8, u.getId());
+            if (u.getBirthPlace() != null) {
+                stmt.setInt(8, u.getBirthPlace().getId());
+            } else {
+                stmt.setString(8, null);
+            }
+            
+            if (u.getNationality() != null) {
+                stmt.setInt(9, u.getNationality().getId());
+            } else {
+                stmt.setString(9, null);
+            }
+
+            stmt.setInt(10, u.getId());
             b = stmt.execute();
 
         } catch (Exception ex) {
@@ -166,8 +181,6 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         }
         return b;
     }
-
-
 
     @Override
     public boolean insertUser(User u) {
@@ -175,7 +188,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         boolean b = true;
         try {
             conn = connect();
-            PreparedStatement stmt = conn.prepareStatement("INSERT INTO user (firstname , lastname , email , phone ,profile_description  ,address ,birth_date ) VALUES (? , ? ,  ? ,  ?, ? , ?, ? ) ;");
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO user (firstname , lastname , email , phone ,profile_description  ,address ,birth_date ,birth_place , nationality ) VALUES (? , ? ,  ? ,  ?, ? , ? , ? , ?, ?) ;");
 
             stmt.setString(1, u.getFirstname());
             stmt.setString(2, u.getLastname());
@@ -185,12 +198,25 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
 
             stmt.setString(5, u.getProfileDescription());
             stmt.setString(6, u.getAddress());
-            
+
             if (u.getBirthDate() != null) {
                 stmt.setDate(7, u.getBirthDate());
             } else {
                 stmt.setString(7, null);
             }
+
+            if (u.getBirthPlace() != null) {
+                stmt.setInt(8, u.getBirthPlace().getId());
+            } else {
+                stmt.setString(8, null);
+            }
+            
+            if (u.getNationality() != null) {
+                stmt.setInt(9, u.getNationality().getId());
+            } else {
+                stmt.setString(9, null);
+            }
+
 
             b = stmt.execute();
 
@@ -200,7 +226,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         }
         return b;
     }
-    
+
     @Override
     public boolean removeUser(int id) {
         Connection conn;

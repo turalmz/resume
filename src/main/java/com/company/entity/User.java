@@ -20,12 +20,14 @@ public class User {
     String address;
     String profileDescription;
     Date birthDate;
+    Country birthPlace;
+    Country nationality;
     
     public User(int id) {
         this.id = id;
     }
 
-    public User(int id, String firstname, String lastname, String email, String phone, String address, String profileDescription, Date birthDate) {
+    public User(int id, String firstname, String lastname, String email, String phone, String address, String profileDescription, Date birthDate, Country birthPlace, Country nationality) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -34,6 +36,8 @@ public class User {
         this.address = address;
         this.profileDescription = profileDescription;
         this.birthDate = birthDate;
+        this.birthPlace = birthPlace;
+        this.nationality = nationality;
     }
 
     public int getId() {
@@ -98,6 +102,22 @@ public class User {
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public Country getBirthPlace() {
+        return birthPlace;
+    }
+
+    public void setBirthPlace(Country birthPlace) {
+        this.birthPlace = birthPlace;
+    }
+
+    public Country getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(Country nationality) {
+        this.nationality = nationality;
     }
 
     
