@@ -108,6 +108,30 @@ public class EmpHistoryDaoImpl extends AbstractDAO implements EmpHistoryDaoInter
     }
 
     @Override
+    public boolean insertEmpHistory(EmpHistory u) {
+        Connection conn;
+        boolean b = true;
+        try {
+            conn = connect();
+            PreparedStatement stmt = conn.prepareStatement("INSERT employment_history  (header , job_description , begin_date  , end_date ) VALUES (? , ? , ? , ?) ",Statement.RETURN_GENERATED_KEYS);
+            stmt.setString(1, u.getHeader());
+            stmt.setString(2, u.getJobDescription());
+            stmt.setDate(3, u.getBeginDate());
+            stmt.setDate(4, u.getEndDate());
+
+            b = stmt.execute();
+            ResultSet genKeys = stmt.getGeneratedKeys();
+            if(genKeys.next()){
+                u.setId(genKeys.getInt(1));
+            }
+        } catch (Exception ex) {
+            System.err.println(ex);
+            b = false;
+        }
+        return b;
+    }
+
+    @Override
     public boolean removeEmpHistory(int id) {
         Connection conn;
         try {

@@ -40,7 +40,7 @@ public class SkillDaoImpl extends AbstractDAO implements SkillDaoInter {
 
             }
         } catch (Exception ex) {
-
+            System.err.println(ex);
         }
         return list;
     }
@@ -95,9 +95,13 @@ public class SkillDaoImpl extends AbstractDAO implements SkillDaoInter {
         boolean b = true;
         try {
             conn = connect();
-            PreparedStatement stmt = conn.prepareStatement("insert skill (name) VALUES (?);");
+            PreparedStatement stmt = conn.prepareStatement("insert skill (name) VALUES (?);",Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, skl.getName());
             b = stmt.execute();
+            ResultSet genKeys = stmt.getGeneratedKeys();
+            if(genKeys.next()){
+                skl.setId(genKeys.getInt(1));
+            }
 
         } catch (Exception ex) {
             System.err.println(ex);
