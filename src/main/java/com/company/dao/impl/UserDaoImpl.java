@@ -43,9 +43,11 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
             System.err.println("Houston, we have a problem");
         }
         int birthPlace = rs.getInt("birth_place");
+        String natinalityName =  rs.getString("nationality_name");
         int nationality = rs.getInt("nationality");
+        String countryName =  rs.getString("contry_name");
 
-        User us = new User(id, firstname, lastname, email, phone, address, profileDescription, birthDate, new Country(birthPlace), new Country(nationality));
+        User us = new User(id, firstname, lastname, email, phone, address, profileDescription, birthDate, new Country(birthPlace,countryName,null), new Country(nationality,null,natinalityName));
         System.out.println(us);
         return us;
 
@@ -59,7 +61,11 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
             conn = connect();
 
             Statement stmt = conn.createStatement();
-            stmt.execute("SELECT * FROM USER");
+            stmt.execute("SELECT *,n.name as nationality_name,c.name as contry_name FROM user u" +
+                    "  LEFT JOIN country c " +
+                    "  ON u.birth_place = c.id " +
+                    "  LEFT JOIN country n " +
+                    "  ON u.nationality = n.id ");
             ResultSet rs = stmt.getResultSet();
 
             while (rs.next()) {
@@ -79,15 +85,50 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         return list;
     }
 
-    public List<User> getByUser(User usr) {
+    public List<User> getAll(String  name,String surname,Integer nat ) {
         List<User> list = new ArrayList<>();
         Connection conn;
         try {
             conn = connect();
+            String sql = "SELECT *,n.name as nationality_name,c.name as contry_name FROM user u" +
+                    "  LEFT JOIN country c " +
+                    "  ON u.birth_place = c.id " +
+                    "  LEFT JOIN country n " +
+                    "  ON u.nationality = n.id "+
+                    " WHERE 1=1 ";
 
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM USER WHERE firstname LIKE ? AND lastname LIKE ?;");
-            stmt.setString(1, usr.getFirstname());
-            stmt.setString(2, usr.getLastname());
+            if(name!= null){
+
+                sql += " and firstname = ? ";
+
+            }
+            if(surname!= null){
+
+                sql += " and lastname = ? ";
+
+            }
+            if(nat!= null){
+
+                sql += " and nationality = ? ";
+
+            }
+//            System.out.println(sql);
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            int count = 1;
+            if(name!= null){
+                stmt.setString(count, name);
+                count ++;
+            }
+            if(surname!= null){
+
+                stmt.setString(count, surname);
+                count ++;
+            }
+            if(nat!= null){
+
+                stmt.setInt(count, nat);
+            }
 
             stmt.execute();
 

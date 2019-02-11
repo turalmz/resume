@@ -120,5 +120,8 @@ public class User {
         this.nationality = nationality;
     }
 
-    
+    @Override
+    public String toString() {
+        return this.firstname+" "+this.lastname;
+    }
 }
