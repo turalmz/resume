@@ -156,8 +156,13 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         Connection conn;
         try {
             conn = connect();
-
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM USER WHERE ID = ?;");
+            String sql = "SELECT *,n.name as nationality_name,c.name as contry_name FROM user u" +
+                    "  LEFT JOIN country c " +
+                    "  ON u.birth_place = c.id " +
+                    "  LEFT JOIN country n " +
+                    "  ON u.nationality = n.id "+
+                    "  WHERE u.id = ? ;";
+            PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, userId);
             stmt.execute();
 
