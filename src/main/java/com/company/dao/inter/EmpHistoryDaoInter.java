@@ -13,13 +13,15 @@ import java.util.List;
  * @author TURAL
  */
 public interface EmpHistoryDaoInter {
-     
+
     List<EmpHistory> getAll();
-     
+
     public EmpHistory getById(int id);
-     
+
+    public boolean insertEmpHistory(EmpHistory u);
+
     boolean updateEmpHistory(EmpHistory u);
-     
+
     boolean removeEmpHistory(int id);
-    
+
 }
