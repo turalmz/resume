@@ -140,14 +140,15 @@ public class LoginDaoImpl extends AbstractDAO implements LoginDaoInter {
     }
 
     @Override
-    public List<Login> getByName(String sname) {
+    public List<Login> getByName(String sname,String pswrd) {
         List<Login> list = new ArrayList<>();
         Connection conn;
         try {
             conn = connect();
 
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM login WHERE username LIKE ?;");
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM login WHERE username = ? AND password = ?;");
             stmt.setString(1, sname);
+            stmt.setString(2, pswrd);
             stmt.execute();
 
             ResultSet rs = stmt.getResultSet();

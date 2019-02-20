@@ -11,10 +11,12 @@ import com.company.dao.impl.SkillDaoImpl;
 import com.company.dao.impl.UserDaoImpl;
 import com.company.dao.impl.UserEmpHistoryDaoImpl;
 import com.company.dao.impl.UserSkillDaoImpl;
+import com.company.dao.impl.LoginDaoImpl;
 import com.company.dao.inter.CountryDaoInter;
 import com.company.dao.inter.EmpHistoryDaoInter;
 import com.company.dao.inter.SkillDaoInter;
 import com.company.dao.inter.UserDaoInter;
+import com.company.dao.inter.LoginDaoInter;
 import com.company.dao.inter.UserEmpHistoryDaoInter;
 import com.company.dao.inter.UserSkillDaoInter;
 
@@ -47,4 +49,9 @@ public class Context {
     public static CountryDaoInter instanceCountryDao() {
         return new CountryDaoImpl();
     }
+
+    public static LoginDaoInter instanceLoginDao() {
+        return new LoginDaoImpl();
+    }
+
 }

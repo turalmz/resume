@@ -23,7 +23,7 @@ public interface LoginDaoInter {
 
     boolean removeLogin(int id);
 
-    public List<Login> getByName(String username);
+    public List<Login> getByName(String username,String password);
 
     public boolean insertLogin(Login log);
 }
