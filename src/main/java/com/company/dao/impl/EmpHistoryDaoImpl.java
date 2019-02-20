@@ -113,11 +113,12 @@ public class EmpHistoryDaoImpl extends AbstractDAO implements EmpHistoryDaoInter
         boolean b = true;
         try {
             conn = connect();
-            PreparedStatement stmt = conn.prepareStatement("INSERT employment_history  (header , job_description , begin_date  , end_date ) VALUES (? , ? , ? , ?) ",Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement stmt = conn.prepareStatement("INSERT employment_history  (header , job_description , begin_date  , end_date, user_id ) VALUES (? , ? , ? , ? , ?) ",Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, u.getHeader());
             stmt.setString(2, u.getJobDescription());
             stmt.setDate(3, u.getBeginDate());
             stmt.setDate(4, u.getEndDate());
+            stmt.setInt(5, u.getUser().getId());
 
             b = stmt.execute();
             ResultSet genKeys = stmt.getGeneratedKeys();
