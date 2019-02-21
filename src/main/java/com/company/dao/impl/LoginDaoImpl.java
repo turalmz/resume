@@ -10,10 +10,7 @@ import com.company.dao.inter.LoginDaoInter;
 import com.company.entity.Login;
 import com.company.entity.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +19,21 @@ import java.util.List;
  * @author TURAL
  */
 public class LoginDaoImpl extends AbstractDAO implements LoginDaoInter {
+
+
+    public Login getLogin(ResultSet rs) throws SQLException {
+
+        int id = rs.getInt("Id");
+        String name = rs.getString("username");
+        String password = rs.getString("password");
+        int usrId = rs.getInt("user_id");
+        Login log = new Login(id, name,password,new User(usrId)) ;
+
+        System.out.println(log);
+        return log;
+
+    }
+
 
     @Override
     public List<Login> getAll() {
@@ -36,12 +48,7 @@ public class LoginDaoImpl extends AbstractDAO implements LoginDaoInter {
 
             while (rs.next()) {
 
-                int id = rs.getInt("Id");
-                String name = rs.getString("username");
-                String password = rs.getString("password");
-                int usrId = rs.getInt("user_id");
-
-                Login log = new Login(id, name,password,new User(usrId)) ;
+                Login log = getLogin(rs) ;
 
                 list.add(log);
             }
@@ -53,7 +60,7 @@ public class LoginDaoImpl extends AbstractDAO implements LoginDaoInter {
 
     @Override
     public Login getById(int userId) {
-        Login usr = null;
+        Login log = null;
         Connection conn;
         try {
             conn = connect();
@@ -66,18 +73,13 @@ public class LoginDaoImpl extends AbstractDAO implements LoginDaoInter {
 
             while (rs.next()) {
 
-                int id = rs.getInt("Id");
-                String name = rs.getString("username");
-                String password = rs.getString("password");
-                int usrId = rs.getInt("user_id");
-
-                usr = new Login(id, name,password,new User(usrId)) ;
+                 log = getLogin(rs) ;
 
             }
         } catch (Exception ex) {
 
         }
-        return usr;
+        return log;
     }
 
     @Override
@@ -140,8 +142,8 @@ public class LoginDaoImpl extends AbstractDAO implements LoginDaoInter {
     }
 
     @Override
-    public List<Login> getByName(String sname,String pswrd) {
-        List<Login> list = new ArrayList<>();
+    public Login getByUserameAndPassword(String sname,String pswrd) {
+        Login log = null;
         Connection conn;
         try {
             conn = connect();
@@ -155,20 +157,13 @@ public class LoginDaoImpl extends AbstractDAO implements LoginDaoInter {
 
             while (rs.next()) {
 
-                int id = rs.getInt("Id");
-                String name = rs.getString("username");
-                String password = rs.getString("password");
-                int usrId = rs.getInt("user_id");
-
-                Login log = new Login(id, name,password,new User(usrId)) ;
-
-                list.add(log);
+                log = getLogin(rs) ;
 
             }
         } catch (Exception ex) {
             System.err.println("Houston, we have a problem");
         }
-        return list;
+        return log;
     }
 
 }
