@@ -234,7 +234,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         boolean b = true;
         try {
             conn = connect();
-            PreparedStatement stmt = conn.prepareStatement("INSERT INTO user (firstname , lastname , email , phone ,profile_description  ,address ,birth_date ,birth_place , nationality ) VALUES (? , ? ,  ? ,  ?, ? , ? , ? , ?, ?) ;");
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO user (firstname , lastname , email , phone ,profile_description  ,address ,birth_date ,birth_place , nationality ) VALUES (? , ? ,  ? ,  ?, ? , ? , ? , ?, ?) ;",Statement.RETURN_GENERATED_KEYS);
 
             stmt.setString(1, u.getFirstname());
             stmt.setString(2, u.getLastname());
@@ -263,8 +263,12 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
                 stmt.setString(9, null);
             }
 
-
             b = stmt.execute();
+
+            ResultSet genKeys = stmt.getGeneratedKeys();
+            if(genKeys.next()){
+                u.setId(genKeys.getInt(1));
+            }
 
         } catch (Exception ex) {
             System.err.println(ex);
