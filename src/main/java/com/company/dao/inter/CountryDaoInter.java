@@ -17,9 +17,10 @@ public interface CountryDaoInter {
     List<Country> getAll();
      
     public Country getById(int id);
-     
+
     boolean updateCountry(Country u);
-     
+    boolean insertCountry(Country u);
+
     boolean removeCountry(int id);
     
 }
