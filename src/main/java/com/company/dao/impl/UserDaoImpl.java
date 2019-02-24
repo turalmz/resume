@@ -34,6 +34,9 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         String email = rs.getString("email");
         String phone = rs.getString("phone");
 
+        String password = rs.getString("password");
+
+
         String address = rs.getString("address");
         String profileDescription = rs.getString("profile_description");
         Date birthDate = null;
@@ -47,7 +50,7 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
         int nationality = rs.getInt("nationality");
         String countryName =  rs.getString("contry_name");
 
-        User us = new User(id, firstname, lastname, email, phone, address, profileDescription, birthDate, new Country(birthPlace,countryName,null), new Country(nationality,null,natinalityName));
+        User us = new User(id, firstname, lastname, email, phone,password, address, profileDescription, birthDate, new Country(birthPlace,countryName,null), new Country(nationality,null,natinalityName));
         System.out.println(us);
         return us;
 
@@ -292,5 +295,34 @@ public class UserDaoImpl extends AbstractDAO implements UserDaoInter {
             System.out.println(ex);
             return false;
         }
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        User log = null;
+        Connection conn;
+        try {
+            conn = connect();
+
+            PreparedStatement stmt = conn.prepareStatement("SELECT *,n.name as nationality_name,c.name as contry_name FROM user u" +
+                    "  LEFT JOIN country c " +
+                    "  ON u.birth_place = c.id " +
+                    "  LEFT JOIN country n " +
+                    "  ON u.nationality = n.id "+
+                    "  WHERE u.email = ?;");
+            stmt.setString(1, email);
+            stmt.execute();
+
+            ResultSet rs = stmt.getResultSet();
+
+            while (rs.next()) {
+
+                log = getUser(rs) ;
+
+            }
+        } catch (Exception ex) {
+            System.err.println("Houston, we have a problem");
+        }
+        return log;
     }
 }

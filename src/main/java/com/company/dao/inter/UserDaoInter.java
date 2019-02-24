@@ -25,5 +25,7 @@ public interface UserDaoInter {
     boolean updateUser(User u);
      
     boolean removeUser(int id);
-    
-}
+
+    public User findByEmail(String email) ;
+
+    }
